@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Soundboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .sound-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sound-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .sound-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .play-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .play-button:hover {
+            background: #45a049;
+        }
+
+        .download-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+
+        .download-button:hover {
+            background: #1976D2;
+        }
+
+        .sound-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Meme Soundboard</h1>
+        <p>Click to play or download your favorite meme sounds!</p>
+    </div>
+
+    <div class="sound-grid" id="soundGrid">
+        <!-- Sound cards will be dynamically added here -->
+    </div>
+
+    <script>
+        const soundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1729722877/q7ipbfcwld7noiy9sueq.mp3";
+        // Sample sound data - all using the same placeholder URL
+        const sounds = [
+            { name: "Wow", file: soundUrl },
+            { name: "Bruh", file: soundUrl },
+            { name: "Windows Error", file: soundUrl },
+            { name: "Vine Boom", file: soundUrl },
+            { name: "Emotional Damage", file: soundUrl },
+            { name: "Sus", file: soundUrl }
+        ];
+
+        let currentAudio = null;
+
+        // Create sound cards
+        const soundGrid = document.getElementById('soundGrid');
+        sounds.forEach(sound => {
+            const card = document.createElement('div');
+            card.className = 'sound-card';
+            card.innerHTML = `
+                <div class="sound-name">${sound.name}</div>
+                <button class="play-button" onclick="playSound('${sound.file}')">Play</button>
+                <button class="download-button" onclick="downloadSound('${sound.file}', '${sound.name}')">Download</button>
+            `;
+            soundGrid.appendChild(card);
+        });
+
+        // Play sound function
+        function playSound(soundFile) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = new Audio(soundFile);
+            currentAudio.play().catch(error => {
+                console.error('Error playing sound:', error);
+                alert('Unable to play sound. Make sure the sound file exists.');
+            });
+        }
+
+        // Download sound function
+        async function downloadSound(soundFile, soundName) {
+            try {
+                const button = event.target;
+                button.classList.add('loading');
+                button.disabled = true;
+
+                // Fetch the sound file
+                const response = await fetch(soundFile);
+                if (!response.ok) throw new Error('Sound file not found');
+                
+                const blob = await response.blob();
+                
+                // Create a download link
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = downloadUrl;
+                // Use the sound name for the download filename
+                a.download = soundName + '.mp3';
+                
+                // Trigger download
+                document.body.appendChild(a);
+                a.click();
+                
+                // Cleanup
+                window.URL.revokeObjectURL(downloadUrl);
+                document.body.removeChild(a);
+            } catch (error) {
+                console.error('Error downloading sound:', error);
+                alert('Unable to download sound. Make sure the sound file exists.');
+            } finally {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
