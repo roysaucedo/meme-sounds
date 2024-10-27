@@ -4,24 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meme Sound Central</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Comic Neue", cursive;
+            font-weight: 600;
+            font-style: normal;
         }
 
         body {
             font-family: Arial, sans-serif;
             background: #f0f0f0;
             padding: 20px;
+            background-image: url("/media/bg.jpg");
+            background-size: contain;
+            background-position: center;
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
             padding: 20px;
-            background: #fff;
+            background: #ffffffab;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
@@ -93,9 +102,11 @@
 </head>
 <body>
     <div class="header">
+        <img src="/media/happy-cat.gif" alt="happy-cat">
         <h1>Meme Sound Central</h1>
         <p>Click to play or download your favorite meme sounds!</p>
-        <p style="font-size: 8px;">A Sauce Studios Product</p>
+        <br>
+        <p style="font-size: 12px;">A Sauce Studios Product</p>
     </div>
 
     <div class="sound-grid" id="soundGrid">
@@ -103,15 +114,24 @@
     </div>
 
     <script>
-        const soundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1729722877/q7ipbfcwld7noiy9sueq.mp3";
+        const bruhSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1729722877/q7ipbfcwld7noiy9sueq.mp3";
+        const wowSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1730064708/anime-wow-sound-effect-mp3cut_iopq7b.mp3";
+        const windowsSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1730064708/windows-xp-startup_1ph012N_ok7wqi.mp3";
+        const failSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1730064708/fail-sound-effect_uqww4j.mp3";
+        const boomSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1730064708/vine-boom-sound-effect_KT89XIq_akipef.mp3";
+        const susSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1730064708/among-us-role-reveal-sound_sp5oa4.mp3";
+        const curbSoundUrl = "https://res.cloudinary.com/dtllyjqvn/video/upload/v1730064708/directed-by-robert-b_voI2Z4T_cynfd5.mp3";
+        
+        
         // Sample sound data - all using the same placeholder URL
         const sounds = [
-            { name: "Wow", file: soundUrl },
-            { name: "Bruh", file: soundUrl },
-            { name: "Windows Error", file: soundUrl },
-            { name: "Vine Boom", file: soundUrl },
-            { name: "Emotional Damage", file: soundUrl },
-            { name: "Sus", file: soundUrl }
+            { name: "Wow", file: wowSoundUrl },
+            { name: "Bruh", file: bruhSoundUrl },
+            { name: "Windows", file: windowsSoundUrl },
+            { name: "Fail", file: failSoundUrl },
+            { name: "Vine Boom", file: boomSoundUrl },
+            { name: "Sus", file: susSoundUrl },
+            { name: "Curb Your Enthusiasm", file: curbSoundUrl }
         ];
 
         let currentAudio = null;
